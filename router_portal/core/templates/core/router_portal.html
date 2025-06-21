@@ -1,0 +1,453 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Samnet</title>
+  <link rel="icon" href="{% static 'core/images/favicon.ico' %}">
+    {% comment %} <meta http-equiv="refresh" content="0; url=https://2dbb-197-248-62-71.ngrok-free.app" /> {% endcomment %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: url("{% static 'core/images/net.jpg' %}") no-repeat center center fixed;
+        background-size: cover;
+        margin: 0;
+        padding: 20px;
+    }
+
+    h1 {
+        color: rgb(255, 251, 0);
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .instructions h2 {
+        color: rgb(255, 238, 0);
+        text-decoration: underline;
+        background: rgba(0, 0, 0, 0.9);
+        text-align: center;
+        margin: 20px auto;
+        padding: 10px;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 400px;
+    }
+    h2 {
+    background: rgba(0, 0, 0, 0.9);
+    color: rgb(255, 253, 252);
+    text-decoration: underline;
+    text-align: center;
+    width: 60%;
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 10px;
+    border-radius: 10px;
+    }
+    h3 {
+        color: white;
+    }
+
+    .instructions {
+        background: rgba(255, 255, 255, 0.88);
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        margin-top: 10px;
+    }
+
+    .instructions p {
+        font-size: 16px;
+        color: rgb(0, 0, 0);
+        line-height: 1.6;
+    }
+
+    .container {
+        width: 95%;
+        max-width: 700px;
+        margin: auto;
+        text-align: center;
+    }
+    .plans, .section {
+    background: rgba(29, 31, 105, 0.99);
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(250, 250, 250, 0.7);
+    margin-top: 10px;
+    }
+
+    .plans {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+        background: rgba(0, 0, 0, 0.84);
+    }
+
+    .plan {
+        flex: 1 1 160px;
+        max-width: 220px;
+        text-align: center;
+        border: 2px solid red;
+        padding: 10px;
+        border-radius: 8px;
+        box-sizing: border-box;
+    }
+
+    .plan h3 {
+        color: rgb(30, 255, 0);
+    }
+
+    .plan p {
+        font-size: 20px;
+        font-weight: bold;
+        color: rgb(255, 187, 0);
+    }
+
+    .btn {
+        padding: 8px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 8px;
+        width: 80%;
+        margin-top: 8px;
+    }
+
+    .btn:hover {
+        background-color: #218838;
+        box-shadow: 0 0 5px rgba(248, 255, 246, 0.75), 0 0 10px rgb(0, 255, 255);
+    }
+
+    .input-field, .submit-btn {
+        width: 90%;
+        padding: 8px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .submit-btn {
+        background-color: rgb(51, 247, 2);
+        color: white;
+        cursor: pointer;
+        font-size: 18px;
+    }
+
+    .submit-btn:hover {
+        background-color: rgb(255, 167, 3);
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-content {
+        background: rgba(53, 51, 51, 0.8);
+        padding: 20px;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 400px;
+        text-align: center;
+        color: white;
+    }
+
+    .modal-content h2 {
+        color: yellow;
+        margin-bottom: 15px;
+    }
+
+    .modal input {
+        width: 90%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .modal button {
+        width: 80%;
+        padding: 10px;
+        margin-top: 5px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    .modal button:first-of-type {
+        background-color: rgb(4, 231, 57);
+        color: white;
+    }
+
+    .modal button:first-of-type:hover {
+        background-color: #218838;
+        box-shadow: 0 0 5px rgba(248, 255, 246, 0.75), 0 0 10px rgb(0, 255, 255);
+    }
+
+    .modal button:last-of-type {
+        background-color: crimson;
+        color: white;
+    }
+
+    #status {
+        margin-top: 10px;
+        font-weight: bold;
+        color: white;
+    }
+
+    /* === RESPONSIVE MEDIA QUERIES === */
+    @media screen and (max-width: 780px) {
+        .plans {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .plan {
+            width: 90%;
+            max-width: 300px;
+        }
+
+        .submit-btn {
+            width: 80%;
+        }
+
+        .btn {
+            width: 90%;
+        }
+
+        .instructions p {
+            font-size: 15px;
+        }
+    }
+
+  .spinner {
+      display: none;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid rgb(1, 184, 168); /* default fallback */
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite, colorCycle 4s linear infinite;
+      margin: 10px auto;
+  }
+
+  @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+  }
+
+  @keyframes colorCycle {
+      0%   { border-top-color: rgb(43, 255, 0); }   
+      25%  { border-top-color: rgb(252, 248, 9); }  
+      50%  { border-top-color: rgb(243, 109, 0); }  
+      75%  { border-top-color: rgb(170, 19, 52); }  
+      100% { border-top-color: rgb(91, 217, 255); }   
+      120% { border-top-color: rgb(3, 36, 224); }
+  }
+
+
+</style>
+</head>
+<body>
+  <h1>SAMNET WIFI LOGIN</h1>
+  <div class="container">
+    <div class="instructions">
+      <h2>How To Purchase:</h2>
+      <p>1. Tap the buy button on your preferred package.</p>
+      <p>2. Enter your phone number.</p>
+      <p>3. Click "PAY NOW".</p>
+      <p>4. Enter your M-Pesa PIN, wait for 30 seconds for M-Pesa authentication.</p>
+      <p class="contact">(CUSTOMER CARE CONTACT: <strong>0715825808</strong>)</p>
+    </div>
+    <h2>Choose a Subscription Plan</h2>
+
+    <div class="plans">
+      {% for plan in plans %}
+      <div class="plan">
+        <h3>{{ plan.validity }}</h3>
+        <p>Ksh {{ plan.amount }}</p>
+        <button class="btn" onclick="openModal({{ plan.id }}, '{{ plan.validity }}')">Buy</button>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <h2 id="modal-title">Buy Plan</h2>
+        <input type="text" id="phone" placeholder="Enter phone number (07XXXXXXX or 01XXXXXXX)">
+        <button onclick="submitPayment()">Confirm</button>
+        <img id="spinner" src="https://i.imgur.com/llF5iyg.gif" alt="Loading..." style="width:40px; display:none; margin: 10px auto;">
+        <p id="status"></p>
+        <button onclick="closeModal()">Cancel</button>
+      </div>
+    </div>
+
+  </div>
+
+<script>
+  let selectedPlanId = null;
+  let selectedPlanName = "";
+
+  function openModal(planId, planName) {
+    selectedPlanId = planId;
+    selectedPlanName = planName;
+    document.getElementById('modal-title').innerText = `Buy ${planName}`;
+    document.getElementById('status').innerText = "";
+    document.getElementById('phone').value = "";
+    document.getElementById('spinner').style.display = 'none';
+    document.getElementById('modal').style.display = 'flex';
+  }
+
+  function closeModal() {
+    document.getElementById('modal').style.display = 'none';
+  }
+
+  function validatePhone(phone) {
+    return /^(07|01)\d{8}$/.test(phone);
+  }
+
+  function showSpinner() {
+    document.getElementById('spinner').style.display = 'block';
+  }
+
+  function hideSpinner() {
+    document.getElementById('spinner').style.display = 'none';
+  }
+
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
+  async function submitPayment() {
+    const phone = document.getElementById('phone').value;
+    const status = document.getElementById('status');
+
+    if (!validatePhone(phone)) {
+      status.innerText = "Invalid phone number format.";
+      return;
+    }
+
+    status.innerText = "Sending STK Push...";
+    showSpinner();
+    setModalDisabled(true);
+
+    try {
+      const response = await fetch("{% url 'initiate_stk' %}", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": getCookie("csrftoken"),
+        },
+        body: JSON.stringify({
+          phone_number: phone,
+          plan_id: selectedPlanId
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.checkout_request_id) {
+        localStorage.setItem("phone_number", phone);
+        status.innerText = "STK push sent. Confirming payment...";
+        pollSTKStatus(data.checkout_request_id, status);
+      } else {
+        hideSpinner();
+        status.innerText = data.error || "Failed to initiate payment.";
+        setModalDisabled(false);
+      }
+    } catch (err) {
+      hideSpinner();
+      status.innerText = "Network error. Trying to verify payment...";
+      setModalDisabled(false);
+    }
+  }
+
+  function setModalDisabled(disabled) {
+    const modal = document.querySelector('.modal-content');
+    const inputs = modal.querySelectorAll('input, button');
+    inputs.forEach(el => {
+      el.disabled = disabled;
+    });
+  }
+
+  function pollSTKStatus(checkoutRequestId) {
+    const status = document.getElementById('status');
+    const interval = setInterval(() => {
+      fetch(`/check-stk-status/?checkout_request_id=${checkoutRequestId}`)
+        .then(response => response.json())
+        .then(data => {
+          if (["Success", "Cancelled", "Timeout"].includes(data.status)) {
+            clearInterval(interval);
+            hideSpinner();
+
+            if (data.status === "Success") {
+              status.innerText = "✅ Payment successful!";
+              connectUser();
+              window.open(`/stk_transaction_details/?checkout_request_id=${checkoutRequestId}`, '_blank');
+            } else if (data.status === "Cancelled") {
+              status.innerText = "Payment was cancelled.";
+            } else {
+              status.innerText = "Payment timed out.";
+            }
+
+            setModalDisabled(false);
+          }
+        })
+        .catch(err => {
+          clearInterval(interval);
+          hideSpinner();
+          status.innerText = "Error checking payment status.";
+        });
+    }, 3000);
+  }
+
+  function connectUser() {
+    const status = document.getElementById('status');
+    status.innerText = "Connecting you to the internet...";
+    setTimeout(() => {
+      status.innerText = "✅ You are now connected!";
+    }, 3000);
+  }
+
+  // Auto-reconnect logic on page load
+  window.addEventListener("load", async () => {
+    const savedPhone = localStorage.getItem("phone_number");
+    if (savedPhone) {
+      try {
+        const response = await fetch(`/api/check-subscription-status/?phone_number=${savedPhone}`);
+        const data = await response.json();
+        if (data.status === "connected") {
+          document.getElementById('status').innerText = "Active subscription found. Connecting...";
+          connectUser();
+        }
+      } catch (err) {
+        // ignore if offline
+      }
+    }
+  });
+</script>
+</body>
+</html>
